@@ -67,23 +67,23 @@ A)set filePath value (auto-set by Installer)
 -enter drive folder
 -copy folder path (with name) from file manager
 -should look like:
- /media/pi/<driveName>
+ /media/pi/<driveName>\n
 B)set difference
 -amount of value change required for a pixel to
  be marked as changed. Lower value will result 
- in more more sensitive readings
+ in more more sensitive readings\n
 C)set pixels
 -number of pixels that need to be marked as 
  changed in order to trigger security record
- mode. 
+ mode. \n
 D)set width
 -The video image width resolution value.
 -default is set to 1280
--max value 1920
+-max value 1920\n
 E)set height
 -The video image height resolution value.
 -default is set to 720
--max value 1080
+-max value 1080\n
 F)set clipLen
 -The length of the video recordings taken when
  security record mode is triggered. Given in
