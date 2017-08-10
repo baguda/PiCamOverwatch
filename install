@@ -70,7 +70,7 @@ class Installer(object):
                 "MemThrshld = \n"
                 "85\n"
                 "filePath   =\n" 
-                "%s\n" % s.path)#"/media/pi/0978-8149\n")
+                "\"%s\" % s.path)\n"
         s.SSDpath = "/home/pi/Desktop/SSDrive.desktop"
         s.OVpath = "/home/pi/Desktop/OV.desktop"
         s.CFpath="/home/pi/Desktop/OWconfig.txt"
