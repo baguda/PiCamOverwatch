@@ -67,33 +67,40 @@ A)set filePath value (auto-set by Installer)
 -enter drive folder
 -copy folder path (with name) from file manager
 -should look like:
- /media/pi/<driveName>\n
+ /media/pi/<driveName>
+	
 B)set difference
 -amount of value change required for a pixel to
  be marked as changed. Lower value will result 
- in more more sensitive readings\n
+ in more more sensitive readings
+	
 C)set pixels
 -number of pixels that need to be marked as 
  changed in order to trigger security record
- mode. \n
+ mode. 
+	
 D)set width
 -The video image width resolution value.
 -default is set to 1280
--max value 1920\n
+-max value 1920
+	
 E)set height
 -The video image height resolution value.
 -default is set to 720
--max value 1080\n
+-max value 1080
+	
 F)set clipLen
 -The length of the video recordings taken when
  security record mode is triggered. Given in
- seconds.\n
+ seconds.
+	
 G)set MemThrshld
 -The max percent disk space used on usb drive 
  before going into memory purge mode.
 
 
-Run Overwatch by opening the desktop icon\n
+Run Overwatch by opening the desktop icon
+
 -Overwatch will open a small gui and a LxTerminal window\n
 -The gui has three buttons:
   Record: start overwatch recording sequence
@@ -109,8 +116,10 @@ Run Overwatch by opening the desktop icon\n
 -If the usb memory used exceeds the MemThrshld value then
  the program will begin purging the video folders as it 
  switches to that folder on the change of the hour. All
- files inside the folder will be deleted when purged.\n
+ files inside the folder will be deleted when purged.
+ 
 Method:
+
 The program uses the pi camera to detect motion by comparing 
 sample pictures over time. The samples are scanned pixel by pixel
 in greyscale to determine the change in shade value. If this 
@@ -118,6 +127,7 @@ change is greater than the 'difference' value set in the OWconfig
 file, then the pixel is marked as changed. If the total number of
 changed pixels exceeds the 'pixels' value set in OWconfig, then 
 the program starts a new recording.
+
 When starting a new recording, the program sets the camera 
 resolution values to the 'height' and 'width' values set in the 
 OWconfig file. Also, the video's save path is set to the folder of
@@ -130,6 +140,7 @@ the new hour folder will be cleared of all internal files as to
 free up disk space. This will continue until the detected 
 percent memory used is less than the 'MemThrshld' value and 
 the program exits purge mode.
+
 Furthermore, the new recordings will have length in seconds 
 equal to the value of 'clipLen' in the OWconfig file. The videos
 are timestamped, encoded to MP4, and saved to the set folder. 
@@ -137,6 +148,7 @@ After the recording is complete, the program will begin scanning
 for motion again.
 
 Operation:
+
 After installing the system, begin use by opening the gui via the
 desktop icon. Click on the 'Record' button and system will be
 activated. It will continue to run until prompted to stop(Ctrl-C),
