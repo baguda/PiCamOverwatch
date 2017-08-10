@@ -1,0 +1,285 @@
+#!/usr/bin/python 
+import io, os, urllib, time
+
+
+class Installer(object):
+    def __init__(s):
+        print("Unpacking...")
+
+        s.curPath = os.path.realpath(__file__)
+
+        s.drive,s.path=os.path.splitdrive(s.curPath)
+        s.path, s.filename = os.path.split(s.path)
+        s.CAMurl = "http://www.clker.com/cliparts/x/X/G/h/6/3/surveillance-camera-hi.png"
+        s.SSDurl = "http://icons.iconarchive.com/icons/thvg/slick-drives/512/SSD-Drive-icon.png"
+        
+        s.OVscpt = ("[Desktop Entry]\nName=Overwatch\nComment=Start overwatch\n"
+        "Icon=/home/pi/Overwatch/dis/cam.png\n"
+        "Exec=sudo python /home/pi/Overwatch/lib/OmyVideo1.py"
+        "\nType=Application\nEncoding=UTF-8\nTerminal=true\nCategories=Security;")
+        s.SSDscpt = ("[Desktop Entry]\n"
+                "Name=Flash Drive\n"
+                "Type=Application\n"
+                "Comment=SSD file explorer\n"
+                "Categories=Application\n"
+                "Path=/media/pi/0978-8149\n"
+                "Exec=xdg-open .\n"
+                "Terminal=false\n"
+                "StartupNotify=false\n"
+                "Icon=/home/pi/Overwatch/dis/sdrive.png\n")
+        s.str=("class frac(object):\n"
+        "    def __init__(self,N,D):\n"
+        "        self.N=N\n"
+        "        self.D=D\n"
+        "        \n"
+        "    def add(self, F):\n"
+        "        self.AD=F.D*self.N\n"
+        "        self.CB=F.N*self.D\n"
+        "        self.BD=F.D*self.D\n"
+        "        self.result=(self.AD+self.CB)/self.BD\n"
+        "        return self.result\n")
+        s.CFscpt=("difference =\n" 
+                "15\n"
+                "pixels     =\n" 
+                "100\n"
+                "width      = \n"
+                "1280\n"
+                "height     = \n"
+                "720\n"
+                "clipLen    = \n"
+                "5\n"
+                "MemThrshld = \n"
+                "85\n"
+                "filePath   =\n" 
+                "%s\n" % s.path)#"/media/pi/0978-8149\n")
+        s.SSDpath = "/home/pi/Desktop/SSDrive.desktop"
+        s.OVpath = "/home/pi/Desktop/OV.desktop"
+        s.CFpath="/home/pi/Desktop/OWconfig.txt"
+        s.OMYpath = "/home/pi/Overwatch/lib/OmyVideo1.py"
+        s.OVWpath = "/home/pi/Overwatch/lib/OverWatch.py"
+        s.OMYscpt = ("#!/usr/bin/python\n" 
+            "from Tkinter import Tk, Label, Button, StringVar\n"
+            "import tkFileDialog\n"
+            "import os\n"
+            "import subprocess\n"
+            "import time\n"
+            "from OverWatch import Overwatch\n"
+            "\n"
+            "class VideoGUI:\n"
+            "    \n"
+            "    def __init__(self, master):\n"
+            "        self.master = master\n"
+            "        master.title(\"Video Player\")\n"
+            "\n"
+            "        self.rec_button = Button(master, text=\"Record\", command=self.startWatch)\n"
+            "        self.rec_button.pack()\n"
+            "        self.greet_button = Button(master, text=\"Open Video\", command=self.askopenfile)\n"
+            "        self.greet_button.pack()\n"
+            "        self.close_button = Button(master, text=\"Close Window\", command=master.destroy)\n"
+            "        self.close_button.pack()\n"
+            "\n"
+            "       \n"
+            "    def startWatch(self):\n"
+            "        ow.watch()\n"
+            "\n"
+            "\n"
+            "    def askopenfile(self):\n"
+            "        from tkFileDialog import askopenfilename\n"
+            "        Tk().withdraw() \n"
+            "        self.filename = askopenfilename()\n"
+            "        vid = subprocess.Popen(['omxplayer', self.filename])\n"
+            "\n"
+            "             \n"       
+            "\n"
+            "ow = Overwatch()\n"
+            "root = Tk()\n"
+            "my_gui = VideoGUI(root)\n"
+            "root.mainloop()\n")
+        s.OVWscpt= ("# -*- coding: utf-8 -*-\n"
+        "import io\n"
+        "import os\n"
+        "import picamera\n"
+        "import time\n"
+        "from datetime import datetime\n"
+        "from PIL import Image\n"
+        "camera = picamera.PiCamera()\n"
+        "\n"
+        "\n"
+        "class Overwatch(object):\n"
+        "\n"
+        "      def __init__(self):\n"
+        "            file1 = open(\"/home/pi/Desktop/OWconfig.txt\", \"r\")\n"
+        "            i=1\n"
+        "            self.data= file1.readlines()\n"
+        "            self.difference = self.parseInt(self.data[1])          #\n"
+        "            self.pixels     = self.parseInt(self.data[3])        #\n"
+        "            self.file_ext   = \".h264\"    #\n"
+        "            self.width      = self.parseInt(self.data[5])       #\n"
+        "            self.height     = self.parseInt(self.data[7])        #\n"
+        "            self.clipLen    = self.parseInt(self.data[9])         #\n"
+        "            self.MemThrshld = self.parseInt(self.data[11])         #\n"
+        "            self.RunState   = True\n"
+        "            self.oldHour    = 0\n"
+        "            self.filePat   = \"%s\"%self.data[13]#\n"
+        "            self.filePath   = \"%s/Videos/\"%self.filePat\n"
+        "        \n"    
+        "\n"
+        "      def compare(self):\n"
+        "            camera.resolution = (100, 75)\n"
+        "            self.stream = io.BytesIO()\n"
+        "            camera.capture(self.stream, format = 'bmp')\n"
+        "            self.stream.seek(0)\n"
+        "            self.im = Image.open(self.stream)\n"
+        "            self.buffer = self.im.load()\n"
+        "            self.stream.close()\n"
+        "            return self.im, self.buffer\n"
+        "\n"
+        "      def setPath(self):\n"
+        "            self.time = datetime.now()\n"
+        "            self.curHour=self.time.hour\n"
+        "            if (self.oldHour==0):\n"
+        "                  self.oldHour=self.curHour\n"
+        "                  self. mak = \"mkdir %s\" % (self.filePath)\n"
+        "                  os.system(self.mak)\n"
+        "                  for ind in range(1,25):\n"
+        "                        m = \"mkdir %s%s\" % (self.filePath, ind)\n"
+        "                        os.system(m)\n"
+        "            self.space = self.getDiskSpace()\n"
+        "            self.cent = self.parseInt(self.space[3])\n"
+        "            if (self.cent > self.MemThrshld):\n"
+        "                   self.clearSpace()\n"
+        "            self.target=\"%s%s\" % (self.filePath,self.curHour)\n"
+        "            self.oldHour=self.curHour\n"
+        "            return self.target\n"
+        "\n"
+        "      def newvideo(self,width, height):\n"
+        "             self.time = datetime.now()\n"
+        "             self.path = self.setPath()\n"
+        "             self.filenam = \"%s/V%02d%02d%02d-%02d%02d%02d\" % (self.path, self.time.month, self.time.day,self.time.year-2000, self.time.hour, self.time.minute, self.time.second)\n"
+        "             self.filename = \"%s%s\" % (self.filenam,self.file_ext)           \n"
+        "             camera.resolution = (self.width, self.height)\n"
+        "             camera.framerate=30\n"
+        "             camera.led=True\n"
+        "             camera.start_recording(self.filename)\n"
+        "             camera.annotate_text = datetime . now() . strftime(\"%Y-%m-%d_%H:%M.%S\")\n"
+        "             camera.wait_recording(self.clipLen)\n"
+        "             camera.stop_recording()\n"
+        "             camera.annotate_text = \"\"\n"
+        "             camera.led=False\n"
+        "             self.strg = \"MP4Box -fps 30 -add %s %s.mp4\" % (self.filename, self.filenam)\n"
+        "             os.system(self.strg)\n"
+        "             os.system(\"sudo rm %s\" %self.filename )\n"
+        "             \n"
+        "      def getDiskSpace(self):\n"
+        "          self.p = os.popen(\"df -h /dev/sda1\")\n"
+        "          self.i = 0\n"
+        "          while 1:\n"
+        "              self.i = self.i +1\n"
+        "              self.line = self.p.readline()\n"
+        "              if self.i==2:\n"
+        "                  return(self.line.split()[1:5])\n"
+        "\n"
+        "      def parseInt(self,sin):\n"
+        "         import re\n"
+        "         self.m = re.search(r'^(\d+)[.,]?\d*?', str(sin))\n"
+        "         return int(self.m.groups()[-1]) if self.m and not callable(sin) else None\n"
+        "\n"
+        "      def clearSpace(self):\n"
+        "            if (self.oldHour != self.curHour):\n"
+        "                  os.system(\"sudo rm %s%s/*\" % (self.filePath,self.curHour))\n"
+        "            print(\"XXXX\")\n"
+        "            return\n"
+        "\n"
+        "      def watch(self):\n"
+        "         try:\n"
+        "            print(\"Starting\")\n"
+        "            self.image1, self.buffer1 = self.compare()\n"
+        "            camera.led= False\n"
+        "            self.timestamp = time.time()\n"
+        "\n"
+        "            while (self.RunState):\n"
+        "               self.image2, self.buffer2 = self.compare()\n"
+        "               self.changedpixels = 0\n"
+        "               for self.x in xrange(0, 100):\n"
+        "                  for self.y in xrange(0, 75):\n"
+        "                     self.pixdiff = abs(self.buffer1[self.x,self.y][1] - self.buffer2[self.x,self.y][1])\n"
+        "                     if self.pixdiff > self.difference:\n"
+        "                        self.changedpixels += 1\n"
+        "               if (self.changedpixels > self.pixels ):\n"
+        "                  print(\"REC...\")\n"
+        "                  self.timestamp = time.time()\n"
+        "                  self.newvideo(self.width, self.height)\n"
+        "                  self.image1, self.buffer1 = self.compare()\n"
+        "               else:   \n"
+        "                     self.image1 = self.image2\n"
+        "                     self.buffer1 = self.buffer2\n"
+        "         finally:\n"
+        "            camera.close()\n"
+        "            print(\"closing\")\n"
+        "         return\n"
+        "\n"
+        "camera.resolution = (1280, 720)\n"
+        "camera.framerate=30\n"
+        "camera.led=True\n"
+        "camera.start_preview()\n"
+        "\n"
+        "time.sleep(3)\n"
+        "camera.stop_preview()\n"
+        "\n"
+        "camera.led=False\n")
+                  
+        
+            
+    def mkItem(s,path,scpt):
+        
+        with io.FileIO(path, "w") as file:
+            file.write(scpt)
+    
+    def mkFileSys(s):
+        #if not os.path.exists(newpath):
+        os.makedirs("/home/pi/Overwatch/lib")
+        os.makedirs("/home/pi/Overwatch/dis")
+   
+
+    def install(s):
+        print("Installing packages...")
+        print("Constructing File Structure...")
+        s.mkFileSys()
+        print("Complete!")
+        print("Retrieving images...")
+        time.sleep(0.1)
+        s.scrapeIcons()
+        print("Complete!")
+        print("Formatting SSD...")
+        time.sleep(0.1)
+        s.mkItem(s.SSDpath,s.SSDscpt)
+        print("Complete!")
+        print("Installing Root Files...")
+        time.sleep(0.1)
+        s.mkItem(s.OVpath,s.OVscpt)
+        print("Complete!")
+        print("Configuring System Parameters...")
+        time.sleep(0.1)
+        s.mkItem(s.CFpath,s.CFscpt)
+        print("Complete!")
+        print("Installing Overwatch to disc...")
+        time.sleep(0.1)
+        s.mkItem(s.OMYpath,s.OMYscpt)
+        print("Complete!")
+        print("Building GUI items...")
+        time.sleep(0.1)
+        s.mkItem(s.OVWpath,s.OVWscpt)
+        print("Installation Complete!")
+        
+    def scrapeIcons(s):
+        urllib.urlretrieve(s.SSDurl,"/home/pi/Overwatch/dis/sdrive.png")
+        urllib.urlretrieve(s.CAMurl,"/home/pi/Overwatch/dis/cam.png")
+        
+ins=Installer()
+ins.install()
+
+
+
+
+
+
