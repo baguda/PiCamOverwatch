@@ -87,29 +87,29 @@ E)set height
 F)set clipLen
 -The length of the video recordings taken when
  security record mode is triggered. Given in
- seconds.
+ seconds.\n
 G)set MemThrshld
 -The max percent disk space used on usb drive 
  before going into memory purge mode.
 
 
-Run Overwatch by opening the desktop icon
--Overwatch will open a small gui and a LxTerminal window
+Run Overwatch by opening the desktop icon\n
+-Overwatch will open a small gui and a LxTerminal window\n
 -The gui has three buttons:
   Record: start overwatch recording sequence
   Open Video: browse for and play mp4 video
-  Close Window: terminates gui
+  Close Window: terminates gui.\n
 -Upon running the recording sequence, the program will 
  generate a folder tree on the usb drive. The folder tree
  is called Videos, and it contains folders numbered 1 
  through 24. Each folder will hold videos recorded during 
  the associated hours. For example, videos recorded at 1am
  appear in the 1 folder, and videos recorded at 1pm appear
- in the 13 folder.
+ in the 13 folder.\n
 -If the usb memory used exceeds the MemThrshld value then
  the program will begin purging the video folders as it 
  switches to that folder on the change of the hour. All
- files inside the folder will be deleted when purged.
+ files inside the folder will be deleted when purged.\n
 Method:
 The program uses the pi camera to detect motion by comparing 
 sample pictures over time. The samples are scanned pixel by pixel
