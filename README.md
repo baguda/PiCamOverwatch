@@ -14,7 +14,7 @@ Required Software:
 
 Installation Steps:
 
-1)Make sure your image is freash:
+1)Make sure your image is fresh:
 
 	$ sudo apt-get upgrade
 
